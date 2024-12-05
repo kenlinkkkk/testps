@@ -1,8 +1,5 @@
 # Script delete old log uninstall 7zip
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory = $false)] [string] $VersionUninstall
-)
+$NewestVersion = "24.09"
 
 # Define the registry path for installed applications
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
@@ -11,7 +8,7 @@ $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
 $appsToUninstall = Get-ChildItem -Path $regPath | ForEach-Object {
     $app = Get-ItemProperty -Path $_.PSPath
 
-    if ($app.DisplayName -like "7-Zip*" -and $app.DisplayVersion -notlike "$VersionUninstall*") {
+    if ($app.DisplayName -like "7-Zip*" -and $app.DisplayVersion -notlike "$($NewestVersion)*") {
         # Return the application's DisplayName and Uninstall string
         [PSCustomObject]@{
             DisplayName    = $app.DisplayName
